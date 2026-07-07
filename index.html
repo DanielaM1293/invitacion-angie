@@ -144,9 +144,74 @@
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; }
   }
+
+  /* ---------- entry screen: sealed invitation ---------- */
+  #entryScreen{
+    position:fixed; inset:0; z-index:60;
+    display:flex; align-items:center; justify-content:center;
+    background:
+      radial-gradient(circle at 18% 22%, #FFD9E4 0%, transparent 46%),
+      radial-gradient(circle at 84% 18%, #F6D19A 0%, transparent 40%),
+      radial-gradient(circle at 50% 92%, #FFB8D2 0%, transparent 52%),
+      #FFF8F4;
+    cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #entryScreen .entry-inner{
+    position:relative; z-index:2;
+    display:flex; flex-direction:column; align-items:center;
+    text-align:center; padding:0 1.5rem;
+  }
+  .entry-seal{
+    width:92px; height:92px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:40px;
+    background: linear-gradient(145deg, #FFD9E4, #FFB8D2);
+    box-shadow: inset 0 0 20px rgba(255,255,255,0.65), 0 14px 30px -12px rgba(184,40,92,0.45);
+    animation: sealPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes sealPulse{
+    0%,100%{ transform: scale(1); }
+    50%    { transform: scale(1.07); }
+  }
+  .entry-hint{
+    margin-top:22px;
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:0.04em;
+    color:#B8285C;
+  }
+  .entry-sub{
+    margin-top:8px;
+    font-size:13px;
+    color:#5A3A45;
+    opacity:0.7;
+  }
+  #entryScreen.is-closing{
+    animation: envelopeClose 0.65s cubic-bezier(.5,0,.75,0) forwards;
+    pointer-events:none;
+  }
+  #entryScreen.is-closing .entry-inner{
+    animation: sealOpen 0.55s ease forwards;
+  }
+  @keyframes sealOpen{
+    0%   { transform: scale(1) rotate(0deg); opacity:1; }
+    100% { transform: scale(1.5) rotate(8deg); opacity:0; }
+  }
+  @keyframes envelopeClose{
+    0%   { opacity:1; }
+    100% { opacity:0; visibility:hidden; }
+  }
+  body.pre-open{ overflow:hidden; }
+  body.pre-open #mainContent{ visibility:hidden; }
+
+  @media (prefers-reduced-motion: reduce){
+    .entry-seal{ animation:none; }
+  }
 </style>
 </head>
-<body class="min-h-screen relative overflow-x-hidden text-plum bg-cream">
+<body class="min-h-screen relative overflow-x-hidden text-plum bg-cream pre-open">
 
 <!--
   🎵 ESPACIO PARA TU CANCIÓN
@@ -154,10 +219,24 @@
   2) Súbelo a la misma carpeta de este HTML (o pon aquí el link directo del archivo)
 -->
 <audio id="bgMusic" src="cancion.mp3" loop preload="none"></audio>
+
+<!-- ================= SEALED INVITATION ENTRY SCREEN ================= -->
+<div id="entryScreen" role="button" tabindex="0" aria-label="Toca para abrir tu invitación">
+  <div id="entryBubbles" class="absolute inset-0 overflow-hidden pointer-events-none" style="z-index:1;"></div>
+  <div class="entry-inner">
+    <div class="entry-seal" aria-hidden="true">💌</div>
+    <p class="entry-hint">Toca para abrir tu invitación</p>
+    <p class="entry-sub">(sube el volumen 🎶)</p>
+  </div>
+</div>
+<!-- =============== END SEALED INVITATION ENTRY SCREEN =============== -->
+
 <button id="btnMusic" aria-label="Reproducir música"
-  class="fixed bottom-5 right-5 z-30 w-12 h-12 rounded-full bg-white/90 backdrop-blur-md border border-raspberryD/25 shadow-[0_10px_24px_-10px_rgba(184,40,92,0.5)] flex items-center justify-center text-xl transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-raspberryD focus-visible:outline-offset-2">
+  class="hidden fixed bottom-5 right-5 z-30 w-12 h-12 rounded-full bg-white/90 backdrop-blur-md border border-raspberryD/25 shadow-[0_10px_24px_-10px_rgba(184,40,92,0.5)] items-center justify-center text-xl transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-raspberryD focus-visible:outline-offset-2">
   🔈
 </button>
+
+<div id="mainContent">
 
 <!-- background gradients -->
 <div class="fixed inset-0 -z-20 bg-[radial-gradient(circle_at_15%_20%,#FFD9E4_0%,transparent_45%),radial-gradient(circle_at_85%_15%,#F6D19A_0%,transparent_38%),radial-gradient(circle_at_50%_90%,#FFB8D2_0%,transparent_50%)]"></div>
@@ -253,6 +332,8 @@
   </footer>
 </main>
 
+</div><!-- /#mainContent -->
+
 <script>
   // ---------- giant living bubbles (parallax + wobble + drift) ----------
   const giantWrap = document.getElementById('giantBubbles');
@@ -322,11 +403,27 @@
     bg.appendChild(b);
   }
 
+  // ---------- entry screen bubbles (small decorative rising bubbles) ----------
+  const entryBubblesWrap = document.getElementById('entryBubbles');
+  for (let i = 0; i < 16; i++) {
+    const b = document.createElement('div');
+    const size = 12 + Math.random() * 44;
+    b.className = 'rising-bubble bubble';
+    b.style.width = size + 'px';
+    b.style.height = size + 'px';
+    b.style.left = (Math.random() * 100) + '%';
+    b.style.animationDuration = (7 + Math.random() * 10) + 's, ' + (4 + Math.random() * 3) + 's';
+    b.style.animationDelay = (Math.random() * 10) + 's, ' + (Math.random() * 3) + 's';
+    b.style.setProperty('--spin-dur', (6 + Math.random() * 6) + 's');
+    entryBubblesWrap.appendChild(b);
+  }
+
   // ---------- música ----------
   const bgMusic = document.getElementById('bgMusic');
   const btnMusic = document.getElementById('btnMusic');
   let musicPlaying = false;
-  btnMusic.addEventListener('click', () => {
+
+  function toggleMusic(){
     if (!musicPlaying) {
       bgMusic.play().then(() => {
         musicPlaying = true;
@@ -341,6 +438,45 @@
       musicPlaying = false;
       btnMusic.textContent = '🔈';
       btnMusic.setAttribute('aria-label', 'Reproducir música');
+    }
+  }
+  btnMusic.addEventListener('click', toggleMusic);
+
+  // ---------- sealed invitation entry screen ----------
+  const entryScreen = document.getElementById('entryScreen');
+
+  function openInvitation(){
+    if (entryScreen.classList.contains('is-closing')) return;
+
+    // el gesto de tocar ES lo que activa el sonido — se llama de forma síncrona
+    // dentro del handler de click para que el navegador lo cuente como interacción del usuario
+    bgMusic.play().then(() => {
+      musicPlaying = true;
+      btnMusic.textContent = '🔊';
+      btnMusic.setAttribute('aria-label', 'Pausar música');
+    }).catch(() => {
+      // si "cancion.mp3" no existe todavía o el navegador bloquea el audio, seguimos sin música
+      musicPlaying = false;
+      btnMusic.textContent = '🔈';
+      btnMusic.setAttribute('aria-label', 'Reproducir música');
+    });
+
+    entryScreen.classList.add('is-closing');
+    entryScreen.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('pre-open');
+    btnMusic.classList.remove('hidden');
+    btnMusic.classList.add('flex');
+
+    setTimeout(() => {
+      entryScreen.remove();
+    }, 700);
+  }
+
+  entryScreen.addEventListener('click', openInvitation);
+  entryScreen.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openInvitation();
     }
   });
 
