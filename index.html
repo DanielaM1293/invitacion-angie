@@ -6,26 +6,25 @@
 <title>Angie cumple años 🫧</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:ital,wght@0,400;0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Poppins:ital,wght@0,400;0,500;0,600;1,500&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     theme: {
       extend: {
         colors: {
-          cream:    '#FFF6F9',
-          blush:    '#FFD6E8',
-          lilac:    '#E7D9FF',
-          mint:     '#B8F2E6',
-          gold:     '#FFE9A8',
-          rose:     '#E85D9E',
-          roseDeep: '#C93F80',
-          plum:     '#4A3B4F',
-          sky:      '#CFEFFF',
+          cream:       '#FFF8F4',
+          petal:       '#FFD9E4',
+          petalDeep:   '#FFB8D2',
+          raspberry:   '#E0447B',
+          raspberryD:  '#B8285C',
+          plum:        '#5A3A45',
+          gold:        '#F6D19A',
         },
         fontFamily: {
           display: ['Fredoka', 'sans-serif'],
-          body: ['Poppins', 'sans-serif'],
+          script:  ['Cormorant Garamond', 'serif'],
+          body:    ['Poppins', 'sans-serif'],
         },
         keyframes: {
           bubbleGrow: {
@@ -36,6 +35,10 @@
           fadeInUp: {
             '0%':   { opacity: '0', transform: 'translateY(14px)' },
             '100%': { opacity: '1', transform: 'translateY(0)' },
+          },
+          drawRibbon: {
+            '0%':   { strokeDashoffset: '260' },
+            '100%': { strokeDashoffset: '0' },
           },
         },
         animation: {
@@ -49,8 +52,9 @@
 <style>
   body{ font-family:'Poppins', sans-serif; }
   .font-display{ font-family:'Fredoka', sans-serif; }
+  .font-script{ font-family:'Cormorant Garamond', serif; font-style:italic; }
 
-  /* ---------- living bubble: wobble + iridescent film + gloss ---------- */
+  /* ---------- living bubble: wobble + rose-gold film + gloss ---------- */
   .bubble{
     position:absolute;
     border-radius:50%;
@@ -59,17 +63,17 @@
       wobble var(--wobble-dur, 7s) ease-in-out infinite,
       drift  var(--drift-dur, 14s) ease-in-out infinite;
     animation-delay: var(--wobble-delay, 0s), var(--drift-delay, 0s);
-    box-shadow: inset 0 0 24px rgba(255,255,255,0.55), 0 10px 30px -12px rgba(201,63,128,0.18);
+    box-shadow: inset 0 0 24px rgba(255,255,255,0.6), 0 10px 30px -12px rgba(184,40,92,0.2);
     background:
       radial-gradient(circle at 30% 25%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.1) 26%, transparent 46%),
-      radial-gradient(circle at 72% 74%, #CFEFFF 0%, transparent 62%),
-      linear-gradient(135deg, rgba(255,214,232,0.65), rgba(231,217,255,0.5));
+      radial-gradient(circle at 72% 74%, #FFEFD8 0%, transparent 62%),
+      linear-gradient(135deg, rgba(255,217,228,0.7), rgba(255,184,210,0.5));
   }
   .bubble::before{
     content:'';
     position:absolute; inset:-30%;
-    background: conic-gradient(from 0deg, #FFD6E8, #CFEFFF, #E7D9FF, #B8F2E6, #FFE9A8, #FFD6E8);
-    opacity:.32;
+    background: conic-gradient(from 0deg, #FFD9E4, #F6D19A, #FFB8D2, #FFF3E0, #E0447B, #FFD9E4);
+    opacity:.26;
     mix-blend-mode: overlay;
     animation: spinHue var(--spin-dur, 10s) linear infinite;
   }
@@ -112,6 +116,31 @@
   }
   .pop-once{ animation: bubblePop 0.4s ease-in 1.1s forwards; }
 
+  .ribbon-underline{ stroke-dasharray:260; stroke-dashoffset:260; animation: drawRibbon 1.1s ease forwards; animation-delay: 1.35s; }
+
+  /* ---------- hero name: liquid bubble shimmer ---------- */
+  .name-shimmer{
+    background: linear-gradient(100deg, #B8285C 0%, #E0447B 22%, #F6D19A 42%, #FFEFD8 50%, #F6D19A 58%, #E0447B 78%, #B8285C 100%);
+    background-size: 260% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmerMove 5.5s ease-in-out infinite;
+    filter: drop-shadow(0 6px 18px rgba(184,40,92,0.22));
+  }
+  @keyframes shimmerMove{
+    0%,100%{ background-position: 0% 50%; }
+    50%    { background-position: 100% 50%; }
+  }
+  .orbit-bubble{
+    position:absolute; border-radius:50%;
+    animation: wobble 6s ease-in-out infinite, orbitFloat var(--orbit-dur,9s) ease-in-out infinite;
+  }
+  @keyframes orbitFloat{
+    0%,100%{ transform: translate(0,0) scale(1); }
+    50%    { transform: translate(var(--ox,14px), var(--oy,-18px)) scale(1.06); }
+  }
+
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; }
   }
@@ -119,8 +148,19 @@
 </head>
 <body class="min-h-screen relative overflow-x-hidden text-plum bg-cream">
 
+<!--
+  🎵 ESPACIO PARA TU CANCIÓN
+  1) Nombra tu archivo "cancion.mp3"
+  2) Súbelo a la misma carpeta de este HTML (o pon aquí el link directo del archivo)
+-->
+<audio id="bgMusic" src="cancion.mp3" loop preload="none"></audio>
+<button id="btnMusic" aria-label="Reproducir música"
+  class="fixed bottom-5 right-5 z-30 w-12 h-12 rounded-full bg-white/90 backdrop-blur-md border border-raspberryD/25 shadow-[0_10px_24px_-10px_rgba(184,40,92,0.5)] flex items-center justify-center text-xl transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-raspberryD focus-visible:outline-offset-2">
+  🔈
+</button>
+
 <!-- background gradients -->
-<div class="fixed inset-0 -z-20 bg-[radial-gradient(circle_at_15%_20%,#E7D9FF_0%,transparent_45%),radial-gradient(circle_at_85%_15%,#CFEFFF_0%,transparent_40%),radial-gradient(circle_at_50%_90%,#FFD6E8_0%,transparent_50%)]"></div>
+<div class="fixed inset-0 -z-20 bg-[radial-gradient(circle_at_15%_20%,#FFD9E4_0%,transparent_45%),radial-gradient(circle_at_85%_15%,#F6D19A_0%,transparent_38%),radial-gradient(circle_at_50%_90%,#FFB8D2_0%,transparent_50%)]"></div>
 
 <!-- giant living bubbles (parallax) -->
 <div id="giantBubbles" class="fixed inset-0 -z-10 overflow-hidden pointer-events-none"></div>
@@ -130,17 +170,26 @@
 
 <main class="relative z-10 max-w-2xl mx-auto px-6 sm:px-8 py-14 sm:py-20">
 
-  <div class="text-center text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-roseDeep mb-4 opacity-0 animate-fade-in-up" style="animation-delay:1.3s">
+  <div class="text-center text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-raspberryD mb-4 opacity-0 animate-fade-in-up" style="animation-delay:1.3s">
     celebración sorpresa
   </div>
 
-  <div class="relative flex items-center justify-center min-h-[220px] sm:min-h-[280px] text-center mb-2">
+  <div class="relative flex items-center justify-center min-h-[320px] sm:min-h-[420px] text-center mb-2">
+    <!-- orbiting bubbles around the name -->
+    <div class="orbit-bubble bubble opacity-70" style="width:38px;height:38px; top:8%; left:14%; --orbit-dur:7s; --oy:-16px; --ox:10px;"></div>
+    <div class="orbit-bubble bubble opacity-60" style="width:22px;height:22px; top:70%; left:80%; --orbit-dur:8.5s; --oy:14px; --ox:-12px;"></div>
+    <div class="orbit-bubble bubble opacity-50" style="width:16px;height:16px; top:20%; left:84%; --orbit-dur:6s; --oy:-10px; --ox:-8px;"></div>
+
     <div class="bubble pop-once absolute w-24 h-24 sm:w-32 sm:h-32 animate-bubble-grow" style="--wobble-dur:5s; --spin-dur:6s;"></div>
-    <div class="opacity-0 animate-fade-in-up" style="animation-delay:1.15s">
-      <h1 class="font-display font-bold text-roseDeep leading-[1.05] text-[38px] sm:text-[52px] md:text-[60px]">
-        ¡Angie cumple!
+    <div class="opacity-0 animate-fade-in-up relative" style="animation-delay:1.15s">
+      <p class="font-body font-medium text-raspberryD text-sm sm:text-base tracking-[0.15em] uppercase mb-2">¡Angie cumple!</p>
+      <h1 class="name-shimmer font-script font-semibold leading-[0.95] text-[86px] sm:text-[130px] md:text-[160px] relative inline-block">
+        Angie
+        <svg class="absolute left-0 -bottom-3 sm:-bottom-4 w-full" height="18" viewBox="0 0 260 14" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M2 8 C 40 2, 80 12, 130 6 S 220 2, 258 8" fill="none" stroke="#E0447B" stroke-width="3" stroke-linecap="round" class="ribbon-underline"/>
+        </svg>
       </h1>
-      <p class="font-body font-medium text-plum text-base sm:text-lg mt-2">
+      <p class="font-body font-medium text-plum text-base sm:text-lg mt-4">
         esta vez, todo el mundo lo sabe… menos ella 🤫
       </p>
     </div>
@@ -151,25 +200,25 @@
   </p>
 
   <!-- details card -->
-  <div class="mt-10 sm:mt-12 bg-white/70 backdrop-blur-md border border-roseDeep/15 rounded-3xl p-6 sm:p-8 shadow-[0_20px_40px_-20px_rgba(74,59,79,0.18)]">
+  <div class="mt-10 sm:mt-12 bg-white/75 backdrop-blur-md border border-raspberryD/15 rounded-3xl p-6 sm:p-8 shadow-[0_20px_40px_-20px_rgba(90,58,69,0.18)]">
     <div class="flex items-start gap-4 py-3 border-b border-plum/10">
-      <div class="flex-none w-11 h-11 rounded-full bg-gradient-to-br from-blush to-lilac flex items-center justify-center text-lg">📅</div>
+      <div class="flex-none w-11 h-11 rounded-full bg-gradient-to-br from-petal to-gold flex items-center justify-center text-lg">📅</div>
       <div>
-        <p class="text-[11px] uppercase tracking-[0.12em] font-semibold text-roseDeep mb-0.5">Fecha</p>
+        <p class="text-[11px] uppercase tracking-[0.12em] font-semibold text-raspberryD mb-0.5">Fecha</p>
         <p class="text-[15px] sm:text-base font-medium">Jueves 9 de julio</p>
       </div>
     </div>
     <div class="flex items-start gap-4 py-3 border-b border-plum/10">
-      <div class="flex-none w-11 h-11 rounded-full bg-gradient-to-br from-blush to-lilac flex items-center justify-center text-lg">🕑</div>
+      <div class="flex-none w-11 h-11 rounded-full bg-gradient-to-br from-petal to-gold flex items-center justify-center text-lg">🕑</div>
       <div>
-        <p class="text-[11px] uppercase tracking-[0.12em] font-semibold text-roseDeep mb-0.5">Hora</p>
+        <p class="text-[11px] uppercase tracking-[0.12em] font-semibold text-raspberryD mb-0.5">Hora</p>
         <p class="text-[15px] sm:text-base font-medium">2:00 p.m.</p>
       </div>
     </div>
     <div class="flex items-start gap-4 py-3">
-      <div class="flex-none w-11 h-11 rounded-full bg-gradient-to-br from-blush to-lilac flex items-center justify-center text-lg">📍</div>
+      <div class="flex-none w-11 h-11 rounded-full bg-gradient-to-br from-petal to-gold flex items-center justify-center text-lg">📍</div>
       <div>
-        <p class="text-[11px] uppercase tracking-[0.12em] font-semibold text-roseDeep mb-0.5">Lugar</p>
+        <p class="text-[11px] uppercase tracking-[0.12em] font-semibold text-raspberryD mb-0.5">Lugar</p>
         <p class="text-[15px] sm:text-base font-medium">Cra 90 #154A-32, Tuna Alta, Suba, Bogotá</p>
       </div>
     </div>
@@ -177,22 +226,22 @@
 
   <!-- rsvp -->
   <div class="mt-9 text-center">
-    <p class="font-display font-semibold text-xl sm:text-2xl text-roseDeep mb-5">¿Cuentas para el 9 de julio?</p>
+    <p class="font-display font-semibold text-xl sm:text-2xl text-raspberryD mb-5">¿Cuentas para el 9 de julio?</p>
     <div class="flex flex-wrap gap-3 justify-center">
-      <button id="btnYes" class="font-semibold text-[15px] px-6 py-3.5 rounded-full text-white bg-gradient-to-br from-rose to-roseDeep shadow-[0_10px_24px_-10px_rgba(201,63,128,0.6)] transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-roseDeep focus-visible:outline-offset-2">
+      <button id="btnYes" class="font-semibold text-[15px] px-6 py-3.5 rounded-full text-white bg-gradient-to-br from-raspberry to-raspberryD shadow-[0_10px_24px_-10px_rgba(184,40,92,0.6)] transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-raspberryD focus-visible:outline-offset-2">
         ¡Ahí estaré! 🫧
       </button>
-      <button id="btnNo" class="font-semibold text-[15px] px-6 py-3.5 rounded-full bg-white text-plum border border-plum/20 transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-roseDeep focus-visible:outline-offset-2">
+      <button id="btnNo" class="font-semibold text-[15px] px-6 py-3.5 rounded-full bg-white text-plum border border-plum/20 transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-raspberryD focus-visible:outline-offset-2">
         No podré ir 💔
       </button>
     </div>
-    <p id="rsvpResponse" class="mt-4 text-[15px] font-medium text-roseDeep min-h-[24px] opacity-0 translate-y-1.5 transition-all duration-300"></p>
+    <p id="rsvpResponse" class="mt-4 text-[15px] font-medium text-raspberryD min-h-[24px] opacity-0 translate-y-1.5 transition-all duration-300"></p>
 
     <div class="relative inline-block mt-6">
-      <button id="btnCal" class="font-semibold text-[15px] px-6 py-3.5 rounded-full bg-white text-roseDeep border border-roseDeep/35 transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-roseDeep focus-visible:outline-offset-2">
+      <button id="btnCal" class="font-semibold text-[15px] px-6 py-3.5 rounded-full bg-white text-raspberryD border border-raspberryD/35 transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-raspberryD focus-visible:outline-offset-2">
         📅 Agregar al calendario
       </button>
-      <div id="calMenu" class="hidden flex-col absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 bg-white rounded-2xl shadow-[0_16px_32px_-14px_rgba(74,59,79,0.28)] border border-plum/10 p-2 min-w-[240px] z-20">
+      <div id="calMenu" class="hidden flex-col absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 bg-white rounded-2xl shadow-[0_16px_32px_-14px_rgba(90,58,69,0.28)] border border-plum/10 p-2 min-w-[240px] z-20">
         <a id="calGoogle" target="_blank" rel="noopener" class="text-plum text-sm font-medium px-3.5 py-2.5 rounded-lg hover:bg-cream text-left">Google Calendar</a>
         <a id="calIcs" download="fiesta-angie.ics" class="text-plum text-sm font-medium px-3.5 py-2.5 rounded-lg hover:bg-cream text-left">Descargar (.ics — Apple/Outlook)</a>
       </div>
@@ -243,8 +292,6 @@
     const dy = (lastY - cy);
     giantEls.forEach(el => {
       const depth = parseFloat(el.dataset.depth);
-      el.style.setProperty('--px', (dx * depth) + 'px');
-      el.style.setProperty('--py', (dy * depth) + 'px');
       el.style.marginLeft = (dx * depth) + 'px';
       el.style.marginTop  = (dy * depth) + 'px';
     });
@@ -275,6 +322,28 @@
     bg.appendChild(b);
   }
 
+  // ---------- música ----------
+  const bgMusic = document.getElementById('bgMusic');
+  const btnMusic = document.getElementById('btnMusic');
+  let musicPlaying = false;
+  btnMusic.addEventListener('click', () => {
+    if (!musicPlaying) {
+      bgMusic.play().then(() => {
+        musicPlaying = true;
+        btnMusic.textContent = '🔊';
+        btnMusic.setAttribute('aria-label', 'Pausar música');
+      }).catch(() => {
+        // si el archivo "cancion.mp3" no existe todavía, no pasa nada
+        btnMusic.textContent = '🔈';
+      });
+    } else {
+      bgMusic.pause();
+      musicPlaying = false;
+      btnMusic.textContent = '🔈';
+      btnMusic.setAttribute('aria-label', 'Reproducir música');
+    }
+  });
+
   // ---------- rsvp ----------
   const responseEl = document.getElementById('rsvpResponse');
   document.getElementById('btnYes').addEventListener('click', () => {
@@ -288,7 +357,7 @@
   });
 
   function burstConfetti(){
-    const colors = ['#FFD6E8','#E7D9FF','#CFEFFF','#E85D9E','#FFE9A8','#B8F2E6'];
+    const colors = ['#FFD9E4','#F6D19A','#FFB8D2','#E0447B','#B8285C','#FFF3E0'];
     for (let i = 0; i < 26; i++) {
       const p = document.createElement('div');
       const size = 6 + Math.random() * 9;
